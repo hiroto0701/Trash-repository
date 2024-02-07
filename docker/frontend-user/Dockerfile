@@ -4,6 +4,7 @@ WORKDIR /usr/app
 
 COPY ./frontend-user/package*.json ./
 
+RUN apk update
 RUN npm install
 
 COPY . .
