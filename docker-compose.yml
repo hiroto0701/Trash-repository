@@ -4,54 +4,73 @@ volumes:
   postgres-volume:
 
 services:
-  app:
+  curry_addiction_nginx:
     build:
       context: .
-      dockerfile: ./docker/php/Dockerfile
-    ports:
-      - 3000:3000
-    depends_on:
-      - db
+      dockerfile: ./docker/nginx/Dockerfile
+    container_name: curry_addiction_nginx
     volumes:
-      - ./src/laravel/:/var/www/html
+      - ./laravel/:/var/www/html
+    ports:
+      - 38182:80
+
+  curry_addiction_db:
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    container_name: curry_addiction_db
+    ports:
+      - 35555:5432
+    environment:
+      TZ: Asia/Tokyo
+      POSTGRES_DB: curry_addiction
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - postgres-volume:/var/lib/postgresql
+
+  curry_addiction_php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+    container_name: curry_addiction_php-fpm
+    volumes:
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./laravel/:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - curry_addiction_db
     environment:
       - DB_CONNECTION=pgsql
-      - DB_HOST=db
+      - DB_HOST=curry_addiction_db
       - DB_PORT=5432
       - DB_DATABASE=${DB_NAME}
       - DB_USERNAME=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
 
-  web:
-    build:
-      context: .
-      dockerfile: ./docker/nginx/Dockerfile
-    ports:
-      - ${WEB_PORT}:80
-    depends_on:
-      - app
+  curry_addiction_composer:
+    container_name: curry_addiction_composer
+    image: composer:2.1.6
     volumes:
-      - ./src/laravel/:/var/www/html
+      - ./laravel:/app
+    entrypoint: composer
 
-  frontend:
+  curry_addiction_frontend-admin:
     build:
-      context: .
-      dockerfile: ./docker/frontend/Dockerfile
+      context: ./
+      dockerfile: ./docker/frontend-admin/Dockerfile
+    container_name: curry_addiction_frontend-admin
     volumes:
-      - ./src/frontend:/usr/src/app
+      - ./frontend-admin:/app
     ports:
-      - 5173:5173
+      - 8080:8080
 
-  db:
+  curry_addiction_frontend-user:
     build:
-      context: .
-      dockerfile: ./docker/postgres/Dockerfile
-    ports:
-      - ${DB_PORT}:5432
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      PGTZ: 'Asia/Tokyo'
+      context: ./
+      dockerfile: ./docker/frontend-user/Dockerfile
+    container_name: curry_addiction_frontend-user
     volumes:
-      - postgres-volume:/var/lib/postgresql
+      - ./frontend-user:/app
+    ports:
+      - 8081:8080
