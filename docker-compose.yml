@@ -44,9 +44,9 @@ services:
       - DB_CONNECTION=pgsql
       - DB_HOST=curry_addiction_db
       - DB_PORT=5432
-      - DB_DATABASE=${DB_NAME}
-      - DB_USERNAME=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=curry_addiction
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
 
   curry_addiction_composer:
     container_name: curry_addiction_composer
