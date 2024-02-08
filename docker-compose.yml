@@ -11,6 +11,8 @@ services:
     container_name: curry_addiction_nginx
     volumes:
       - ./laravel/:/var/www/html
+    depends_on:
+      - curry_addiction_php-fpm
     ports:
       - 38182:80
 

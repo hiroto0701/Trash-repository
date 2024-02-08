@@ -1,10 +1,9 @@
 FROM node:18-alpine
 
-WORKDIR /usr/app
+WORKDIR /app
 
 COPY ./frontend-user/package*.json ./
 
-RUN apk update
 RUN npm install
 
 COPY . .
