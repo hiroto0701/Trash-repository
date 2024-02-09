@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY ./frontend-user/package*.json ./
 
-RUN npm install
-
-COPY . .
+RUN apk update
 
 CMD ["npm", "run", "dev"]
