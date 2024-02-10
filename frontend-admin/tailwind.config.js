@@ -5,7 +5,12 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        TrainOne: ["'Train One', system-ui"],
+        intel: ["'Inter', sans-serif"]
+      },
+    },
   },
   plugins: [],
 }
