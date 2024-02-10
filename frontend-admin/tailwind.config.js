@@ -8,7 +8,7 @@ export default {
     extend: {
       fontFamily: {
         TrainOne: ["'Train One', system-ui"],
-        intel: ["'Inter', sans-serif"]
+        inter: ["'Inter', sans-serif"]
       },
     },
   },
