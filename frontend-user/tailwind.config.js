@@ -7,9 +7,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        TrainOne: ["'Train One', system-ui"],
-        inter: ["'Inter', sans-serif"]
+        TrainOne: ['Train One', 'system-ui'],
+        inter: ['Inter', 'sans-serif']
       },
+      colors: {
+        'curry': 'rgba(220, 192, 159, 1)'
+      }
     },
   },
   plugins: [],
